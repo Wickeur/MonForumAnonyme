@@ -38,7 +38,10 @@ jobs:
 
       - name: Build Docker images
         run: |
-          # Ajoutez ici vos commandes pour construire les images Docker
+          # Assurez-vous d'avoir le service Docker démarré
+          sudo service docker start
+
+          # Construisez les images Docker en utilisant Docker Compose
           docker-compose build
 
   deploy:

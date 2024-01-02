@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Exposez le port sur lequel le service écoute
-EXPOSE 3000
+EXPOSE 8080
 
 # Commande pour démarrer le service
 CMD ["npm", "start"]

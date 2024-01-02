@@ -9,6 +9,17 @@ services:
     networks:
       - internal_network
 
+  apache:
+    image: php:7.4-apache
+    volumes:
+      - ./apache/apache.conf:/etc/apache2/sites-available/000-default.conf
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+    networks:
+      - internal_network
+
   db:
     build:
       context: ./DB
