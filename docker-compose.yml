@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  api:
+    build:
+      context: ./API
+    ports:
+      - "3000:3000"
+    networks:
+      - internal_network
+
+  db:
+    build:
+      context: ./DB
+    networks:
+      - internal_network
+
+  thread:
+    build:
+      context: ./Thread
+    ports:
+      - "80:80"
+    networks:
+      - internal_network
+
+  sender:
+    build:
+      context: ./Sender
+    ports:
+      - "8080:8080"
+    networks:
+      - internal_network
+
+networks:
+  internal_network:
