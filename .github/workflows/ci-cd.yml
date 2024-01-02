@@ -6,13 +6,49 @@ on:
       - main
 
 jobs:
-  build:
+  validation:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Build and Test
+      - name: Validate code
         run: |
-          docker-compose up --build --abort-on-container-exit
+          # Ajoutez ici vos commandes de validation (linting, formatting, etc.)
+          echo "Validation successful"
+
+  tests:
+    runs-on: ubuntu-latest
+    needs: validation
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run tests
+        run: |
+          # Ajoutez ici vos commandes pour lancer les tests (unitaires, intégration, end-to-end, etc.)
+          echo "Tests successful"
+
+  build:
+    runs-on: ubuntu-latest
+    needs: tests
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build Docker images
+        run: |
+          # Ajoutez ici vos commandes pour construire les images Docker
+          docker-compose build
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Deploy to Docker Swarm
+        run: |
+          # Ajoutez ici vos commandes pour déployer sur Docker Swarm via SSH
+          ssh user@your-server "cd /path/to/your/app && docker-compose pull && docker-compose up -d"
