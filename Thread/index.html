@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affichage des messages</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h1 style="text-align: center">Les messages</h1>
+    
+        <div style="position: absolute; top:10%; right: 4%">
+            <a class="btn btn-secondary" href="localhost:8080" style="margin-bottom: 10px;">Ajouter un message</a>
+        </div>
+        
+        <!-- Affichage des classes et des étudiants -->
+        <div class="mt-4">
+            <h3>Les messages</h3>
+            <table class="table table-striped" id="messagesTable"></table>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+    
+</body>
+</html>
