@@ -27,7 +27,8 @@ jobs:
       - name: Run tests
         run: |
           # Ajoutez ici vos commandes pour lancer les tests (unitaires, intégration, end-to-end, etc.)
-          echo "Tests successful"
+          echo "Execution test"
+          ./vendor/bin/phpunit tests
 
   build:
     runs-on: ubuntu-latest
