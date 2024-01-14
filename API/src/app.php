@@ -1,18 +1,17 @@
 <?php
 
+define('CSV_FILE_PATH', __DIR__ . '/CSV/message.csv');
+
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
-
 $uri = $_SERVER['REQUEST_URI'];
-$data = [];
 
 switch ($uri) {
     case '/Thread':
-        global $data;
-        $data = readCSV("CSV/message.csv");
+        $data = readCSV(CSV_FILE_PATH);
         echo json_encode(getMessage());
         break;
 
@@ -56,7 +55,7 @@ function readCSV($filename) {
 function getMessage(){
     $data = [];
 
-    if (($handle = fopen("CSV/message.csv", 'r')) !== false) {
+    if (($handle = fopen(CSV_FILE_PATH, 'r')) !== false) {
         while (($row = fgetcsv($handle, 1000, ',')) !== false) {
             // On saute la 1er ligne
             if ($row[0] === 'id') {
@@ -116,9 +115,9 @@ function validateMessageData($data) {
  * Fonction pour ajouter un message
  */
 function addMessage($data) {
-    $lastId = getLastMessageId("CSV/message.csv");
+    $lastId = getLastMessageId(CSV_FILE_PATH);
     $newMessage = [$lastId + 1, $data['user'], $data['description']];
-    saveFile("CSV/message.csv", $newMessage);
+    saveFile(CSV_FILE_PATH, $newMessage);
     return $newMessage;
 }
 
