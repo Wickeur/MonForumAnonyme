@@ -1,20 +1,32 @@
-# Utilisez une image de base appropriée
-FROM node:14
+# Partir de ngix 
+# Utiliser une image NGINX comme base
+FROM nginx
 
-# Répertoire de travail dans le conteneur
-WORKDIR /app
-
-# Copiez les fichiers nécessaires dans le conteneur
-COPY package*.json ./
-
-# Installez les dépendances
-RUN npm install
-
-# Copiez le reste des fichiers
-COPY . .
+# Copier les configurations NGINX dans le conteneur
+COPY dist /usr/share/nginx/html
 
 # Exposez le port sur lequel le service écoute
-EXPOSE 8080
+EXPOSE 80
 
-# Commande pour démarrer le service
-CMD ["npm", "start"]
+# Lancer npm run build avant docker compose build !!!!!
+
+
+# # Partir de ngix 
+# # Utiliser une image NGINX comme base
+# FROM nginx
+
+# WORKDIR /app
+
+# # Copier tout sauf node_modules
+# COPY ./src ./public ./dist ./
+
+# RUN npm install
+
+# RUN npm run build
+
+# # Copier les configurations NGINX dans le conteneur
+# RUN cp /app/dist /usr/share/nginx/html
+
+# # Exposez le port sur lequel le service écoute
+# EXPOSE 8080
+
