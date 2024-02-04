@@ -8,25 +8,8 @@ services:
       - "3000:3000"
     networks:
       - internal_network
-
-  # apache:
-  #   image: php:7.4-apache
-  #   volumes:
-  #     - ./apache/apache.conf:/etc/apache2/sites-available/000-default.conf
-  #   ports:
-  #     - "8080:80"
-  #   depends_on:
-  #     - api
-  #   networks:
-  #     - internal_network
-
-  # db:
-  #   build:
-  #     context: ./DB
-  #   networks:
-  #     - internal_network
-  #   volumes:
-  #     - db_data:/path/in/container/to/store/data
+    volumes:
+      - ./API/src:/var/www/html  
 
   thread:
     build:
@@ -36,7 +19,7 @@ services:
     networks:
       - internal_network
     volumes:
-      - thread_data:/path/in/container/to/store/data
+      - ./Thread:/path/in/container/to/store/data
 
   sender:
     build:
@@ -45,10 +28,30 @@ services:
       - "8080:80"
     networks:
       - internal_network
+    volumes:
+      - ./Sender:/var/www/html 
+
+  apache:
+    image: php:7.4-apache
+    volumes:
+      - ./apache/apache.conf:/etc/apache2/sites-available/000-default.conf
+    ports:
+      - "3001:80"
+    depends_on:
+      - api
+    networks:
+      - internal_network
+
+  db:
+    build:
+      context: ./DB
+    networks:
+      - internal_network
+    volumes:
+      - db_data:/path/in/container/to/store/data
 
 networks:
   internal_network:
 
 volumes:
   db_data:
-  thread_data:

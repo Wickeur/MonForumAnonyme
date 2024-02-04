@@ -1,14 +1,14 @@
-# Utilisez une image de base appropriée
-FROM node:14
+# Utilisez une image de base appropriée avec PHP et Node.js
+FROM php:7.4-apache
 
 # Répertoire de travail dans le conteneur
 WORKDIR /app
 
 # Copiez les fichiers nécessaires dans le conteneur
-COPY *.php ./
+COPY . .
 
-# Exposez le port sur lequel le service écoute
-EXPOSE 3000
+# Exposez le port sur lequel le service écoute (par défaut pour Apache)
+EXPOSE 80
 
 # Commande pour démarrer le service
-CMD ["php", "-S", "localhost:3000", ".\src\app.php"]
+CMD ["apache2-foreground"]
