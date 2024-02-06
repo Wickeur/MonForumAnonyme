@@ -62,6 +62,10 @@ services:
     volumes:
       - db_data:/var/lib/mysql
 
+  # Ce connecter à la db du docker 
+  # docker exec -it idConteneur bash
+  # mysql -u db_user -pdb_password forum_db
+
 networks:
   internal_network:
     # nom réseau qui permet de connecter les connecteurs entre eux
