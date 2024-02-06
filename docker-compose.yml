@@ -2,6 +2,8 @@ version: '3.9'
 
 services:
   api:
+    depends_on:
+      - db #je dépends de la base de donnée
     build:
       context: ./API
     ports:
@@ -9,19 +11,23 @@ services:
     networks:
       - internal_network
     volumes:
-      - ./API/src:/var/www/html  
+      - ./API/src:/var/www/html
 
   thread:
+    depends_on:
+      - api
     build:
       context: ./Thread
     ports:
-      - "8000:8000"
+      - "8000:80"
     networks:
       - internal_network
     volumes:
       - ./Thread:/path/in/container/to/store/data
 
   sender:
+    depends_on:
+      - api
     build:
       context: ./Sender
     ports:
@@ -29,7 +35,7 @@ services:
     networks:
       - internal_network
     volumes:
-      - ./Sender:/var/www/html 
+      - ./Sender:/var/www/html
 
   apache:
     image: php:7.4-apache
@@ -43,15 +49,22 @@ services:
       - internal_network
 
   db:
-    build:
-      context: ./DB
+    # build:
+    #   context: ./DB Prendre en compte le dockerfile 
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: forum_db
+      MYSQL_USER: db_user
+      MYSQL_PASSWORD: db_password
     networks:
       - internal_network
     volumes:
-      - db_data:/path/in/container/to/store/data
+      - db_data:/var/lib/mysql
 
 networks:
   internal_network:
+    # nom réseau qui permet de connecter les connecteurs entre eux
 
 volumes:
   db_data:

@@ -1,20 +1,17 @@
-# Utilisez une image de base appropriée
-FROM node:14
+# Utilisez l'image MySQL officielle de Docker Hub
+FROM mysql:latest
 
-# Répertoire de travail dans le conteneur
-WORKDIR /app
+# Variables d'environnement pour configurer MySQL
+ENV MYSQL_ROOT_PASSWORD=root_password
+ENV MYSQL_DATABASE=forum_db
+ENV MYSQL_USER=db_user
+ENV MYSQL_PASSWORD=db_password
 
-# Copiez les fichiers nécessaires dans le conteneur
-COPY package*.json ./
+# Copiez le fichier SQL avec les données dans le conteneur
+COPY init.sql /docker-entrypoint-initdb.d/
 
-# Installez les dépendances
-RUN npm install
+# Exposez le port MySQL (par défaut, c'est 3306)
+EXPOSE 3306
 
-# Copiez le reste des fichiers
-COPY . .
-
-# Exposez le port sur lequel le service écoute
-EXPOSE 3000
-
-# Commande pour démarrer le service
-CMD ["npm", "start"]
+# CMD pour démarrer MySQL lors du démarrage du conteneur
+CMD ["mysql"]
