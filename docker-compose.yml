@@ -7,7 +7,7 @@ services:
     build:
       context: ./API
     ports:
-      - "3000:3000"
+      - "3000:80"
     networks:
       - internal_network
     volumes:
