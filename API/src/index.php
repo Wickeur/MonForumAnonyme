@@ -15,81 +15,85 @@ try {
     exit;
 }
 
-header("Content-Type: application/json");
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
-
+// Récupération des données à partir de la base de données en fonction de l'URL demandée
 $uri = $_SERVER['REQUEST_URI'];
 
 switch ($uri) {
-    case '/Thread':
-        $data = getMessage($conn);
-        echo json_encode($data);
-        break;
+    case '/':
+        switch ($_SERVER['REQUEST_METHOD']) {
+            case 'GET':
+                try {
+                    // Exécutez la requête SQL pour récupérer toutes les données
+                    $stmt = $conn->query("SELECT * FROM messages");
 
-    case '/Sender':
-        postMessage($conn);
-        break;
+                    // Récupérez toutes les lignes de résultat sous forme d'array associatif
+                    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+                    // Affichez les données récupérées au format JSON
+                    echo json_encode($data);
+                } catch(PDOException $e) {
+                    echo "Erreur lors de la récupération des données : " . $e->getMessage();
+                }
+                break;
+
+            case 'POST':
+                try {
+                    // Récupérez les données de la requête POST
+                    $data = json_decode(file_get_contents('php://input'), true);
+            
+                    // Vérifiez si les données nécessaires sont présentes
+                    if (!isset($data['user']) || !isset($data['description'])) {
+                        http_response_code(400); // Bad Request
+                        echo json_encode(['error' => 'Données invalides pour l\'ajout du message']);
+                        break;
+                    }
+            
+                    // Exécutez la requête SQL pour insérer les données
+                    $stmt = $conn->prepare("INSERT INTO messages (user, description) VALUES (:user, :description)");
+                    $stmt->bindParam(':user', $data['user']);
+                    $stmt->bindParam(':description', $data['description']);
+                    $stmt->execute();
+            
+                    // Affichez un message de succès
+                    echo json_encode(['message' => 'Message ajoute avec succes']);
+                } catch(PDOException $e) {
+                    echo "Erreur lors de l'ajout du message : " . $e->getMessage();
+                }
+                break;
+            
+            case 'DELETE':
+                try {
+                    // Récupérez les données de la requête DELETE
+                    $data = json_decode(file_get_contents('php://input'), true);
+            
+                    // Vérifiez si les données nécessaires sont présentes
+                    if (!isset($data['id'])) {
+                        http_response_code(400); // Bad Request
+                        echo json_encode(['error' => 'Données invalides pour la suppression du message']);
+                        break;
+                    }
+            
+                    // Exécutez la requête SQL pour supprimer les données
+                    $stmt = $conn->prepare("DELETE FROM messages WHERE id = :id");
+                    $stmt->bindParam(':id', $data['id']);
+                    $stmt->execute();
+            
+                    // Affichez un message de succès
+                    echo json_encode(['message' => 'Message supprime avec succes']);
+                } catch(PDOException $e) {
+                    echo "Erreur lors de la suppression du message : " . $e->getMessage();
+                }
+                break;
+            default:
+                http_response_code(405); // Method Not Allowed
+                echo json_encode(['error' => 'Méthode non autorisée']);
+                break;
+        }
+        break;
     default:
         http_response_code(404);
         echo json_encode(['error' => 'Route non reconnue']);
-        exit;
+        break;
 }
 
-/**
- * Fonction pour récupérer les données des messages depuis la base de données
- */
-function getMessage($conn) {
-    $stmt = $conn->prepare("SELECT * FROM messages");
-    $stmt->execute();
-    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    return $data;
-}
-
-/**
- * Fonction pour gérer les requêtes pour la route /Sender
- */
-function postMessage($conn) {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $postData = json_decode(file_get_contents('php://input'), true);
-
-        if (validateMessageData($postData)) {
-            addMessage($conn, $postData);
-            exit;
-        } 
-        else {
-            http_response_code(400); // Bad Request
-            echo json_encode(['error' => 'Données invalides pour l\'ajout du message']);
-            exit;
-        }
-    }
-    else {
-        http_response_code(405); // Method Not Allowed
-        echo json_encode(['error' => 'Méthode non autorisée']);
-        exit;
-    }
-}
-
-/**
- * Fonction pour valider les données pour l'ajout d'un message
- */
-function validateMessageData($data) {
-    return isset($data['user']) && isset($data['description']);
-}
-
-/**
- * Fonction pour ajouter un message dans la base de données
- */
-function addMessage($conn, $data) {
-    $user = $data['user'];
-    $description = $data['description'];
-    $stmt = $conn->prepare("INSERT INTO messages (user, description) VALUES (:user, :description)");
-    $stmt->bindParam(':user', $user);
-    $stmt->bindParam(':description', $description);
-    $stmt->execute();
-    http_response_code(201); // Created
-    echo json_encode(['message' => 'Message ajouté avec succès']);
-}
 ?>
