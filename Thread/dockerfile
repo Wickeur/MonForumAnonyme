@@ -2,8 +2,13 @@
 # Utiliser une image NGINX comme base
 FROM nginx
 
+# Set the working directory in the container
+WORKDIR /var/www/html
+
 # Copier les configurations NGINX dans le conteneur
 COPY dist /usr/share/nginx/html
+
+COPY . .
 
 # Exposez le port sur lequel le service écoute
 EXPOSE 80
