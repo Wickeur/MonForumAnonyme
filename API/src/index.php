@@ -42,8 +42,10 @@ switch ($uri) {
  * Fonction pour récupérer les données des messages depuis la base de données
  */
 function getMessage($conn) {
-    $stmt = $conn->query("SELECT * FROM messages");
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $conn->prepare("SELECT * FROM messages");
+    $stmt->execute();
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $data;
 }
 
 /**

@@ -1,14 +1,19 @@
-# Utilisez une image de base appropriée avec PHP et Node.js
+# Use an official PHP runtime as a parent image
 FROM php:7.4-apache
 
-# Répertoire de travail dans le conteneur
-WORKDIR /app
+# Set the working directory in the container
+WORKDIR /var/www/html
 
-# Copiez les fichiers nécessaires dans le conteneur
+# Copy your PHP application code into the container
 COPY . .
 
-# Exposez le port sur lequel le service écoute (par défaut pour Apache)
+# Install PHP extensions and other dependencies
+RUN apt-get update && \
+    apt-get install -y libpng-dev && \
+    docker-php-ext-install pdo pdo_mysql gd
+
+# Expose the port Apache listens on
 EXPOSE 80
 
-# Commande pour démarrer le service
+# Start Apache when the container runs
 CMD ["apache2-foreground"]

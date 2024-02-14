@@ -2,6 +2,7 @@
 FROM mysql:latest
 
 # Variables d'environnement pour configurer MySQL
+ENV MYSQL_HOST=localhost
 ENV MYSQL_ROOT_PASSWORD=root_password
 ENV MYSQL_DATABASE=forum_db
 ENV MYSQL_USER=db_user
