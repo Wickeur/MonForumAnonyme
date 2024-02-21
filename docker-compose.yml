@@ -23,7 +23,7 @@ services:
     networks:
       - internal_network
     volumes:
-      - ./Thread:/var/www/html
+      - ./Thread:/usr/share/nginx/html
 
   sender:
     depends_on:
@@ -35,7 +35,7 @@ services:
     networks:
       - internal_network
     volumes:
-      - ./Sender:/var/www/html
+      - ./Sender:/usr/share/nginx/html
 
   apache:
     image: php:7.4-apache

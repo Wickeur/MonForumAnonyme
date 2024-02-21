@@ -24,7 +24,7 @@
         <label for="messageDescription">Le contenu du message:</label>
         <input type="text" id="messageDescription" class="form-control" required>
       </div>
-      <button type="button" class="btn btn-primary mt-2" onclick="addClass()">Ajouter Classe</button>
+      <button type="button" class="btn btn-primary mt-2" onclick="addMessage()">Envoyer</button>
     </form>
   </div>
 
@@ -32,7 +32,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
   <script>
-    function addClass() {
+    function addMessage() {
       var messageUser = document.getElementById('messageUser').value;
       var messageDescription = document.getElementById('messageDescription').value;
 
