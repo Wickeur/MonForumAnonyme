@@ -2,6 +2,39 @@
 
 All notable changes of the PHPUnit 10.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [10.5.11] - 2024-02-25
+
+### Fixed
+
+* [#5704](https://github.com/sebastianbergmann/phpunit/issues/5704#issuecomment-1951105254): No warning when CLI options are used multiple times
+* [#5707](https://github.com/sebastianbergmann/phpunit/issues/5707): `--fail-on-empty-test-suite` CLI option is not documented in `--help` output
+* No warning when the `#[CoversClass]` and `#[UsesClass]` attributes are used with the name of an interface
+* Resource usage information is printed when the `--debug` CLI option is used
+
+## [10.5.10] - 2024-02-04
+
+### Fixed
+
+* [#5692](https://github.com/sebastianbergmann/phpunit/issues/5692): `--log-events-text` and `--log-events-verbose-text` require the destination file to exit
+
+## [10.5.9] - 2024-01-22
+
+### Fixed
+
+* [#5676](https://github.com/sebastianbergmann/phpunit/issues/5676): PHPUnit's test runner overwrites custom error handler registered using `set_error_handler()` in bootstrap script
+
+## [10.5.8] - 2024-01-19
+
+### Fixed
+
+* [#5673](https://github.com/sebastianbergmann/phpunit/issues/5673): Confusing error message when migration of a configuration is requested that does not need to be migrated
+
+## [10.5.7] - 2024-01-14
+
+### Fixed
+
+* [#5662](https://github.com/sebastianbergmann/phpunit/issues/5662): PHPUnit errors out on startup when the `ctype` extension is not loaded but a polyfill for it was installed
+
 ## [10.5.6] - 2024-01-13
 
 ### Added
@@ -79,6 +112,11 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 * [#5563](https://github.com/sebastianbergmann/phpunit/issues/5563): `createMockForIntersectionOfInterfaces()` does not automatically register mock object for expectation verification
 
+[10.5.11]: https://github.com/sebastianbergmann/phpunit/compare/10.5.10...10.5.11
+[10.5.10]: https://github.com/sebastianbergmann/phpunit/compare/10.5.9...10.5.10
+[10.5.9]: https://github.com/sebastianbergmann/phpunit/compare/10.5.8...10.5.9
+[10.5.8]: https://github.com/sebastianbergmann/phpunit/compare/10.5.7...10.5.8
+[10.5.7]: https://github.com/sebastianbergmann/phpunit/compare/10.5.6...10.5.7
 [10.5.6]: https://github.com/sebastianbergmann/phpunit/compare/10.5.5...10.5.6
 [10.5.5]: https://github.com/sebastianbergmann/phpunit/compare/10.5.4...10.5.5
 [10.5.4]: https://github.com/sebastianbergmann/phpunit/compare/10.5.3...10.5.4

@@ -6,53 +6,30 @@ on:
       - main
 
 jobs:
-  validation:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Validate code
-        run: |
-          # Ajoutez ici vos commandes de validation (linting, formatting, etc.)
-          echo "Validation successful"
-
-  tests:
-    runs-on: ubuntu-latest
-    needs: validation
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Run tests
-        run: |
-          # Ajoutez ici vos commandes pour lancer les tests (unitaires, intégration, end-to-end, etc.)
-          echo "Execution test"
-          ./vendor/bin/phpunit tests
-
   build:
     runs-on: ubuntu-latest
-    needs: tests
+
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: root_password
+          MYSQL_DATABASE: forum_db
+          MYSQL_USER: db_user
+          MYSQL_PASSWORD: db_password
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Build Docker images
-        run: |
-          # Assurez-vous d'avoir le service Docker démarré
-          sudo service docker start
+    - name: Install dependencies
+      run: |
+        docker-compose run --rm app composer install --no-interaction --no-progress --prefer-dist
 
-          # Construisez les images Docker en utilisant Docker Compose
-          docker-compose build
+    - name: Run PHPUnit tests
+      run: |
+        docker-compose run --rm app vendor/bin/phpunit API/tests/
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Deploy to Docker Swarm
-        run: |
-          # Ajoutez ici vos commandes pour déployer sur Docker Swarm via SSH
-          ssh user@your-server "cd /path/to/your/app && docker-compose pull && docker-compose up -d"
+    - name: Build and deploy Docker containers
+      run: |
+        docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
