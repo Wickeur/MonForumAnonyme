@@ -22,9 +22,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Install dependencies
-      run: |
-        docker-compose run --rm app composer install --no-interaction --no-progress --prefer-dist
+    # - name: Install dependencies
+    #   run: |
+    #     docker-compose run --rm app composer install --no-interaction --no-progress --prefer-dist
 
     - name: Run PHPUnit tests
       run: |
