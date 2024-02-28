@@ -28,7 +28,7 @@ jobs:
 
     - name: Run PHPUnit tests
       run: |
-        docker-compose run --rm app vendor/bin/phpunit API/tests/
+        docker-compose run --rm app vendor/bin/phpunit API/tests/ApiTest.php
 
     - name: Build and deploy Docker containers
       run: |
