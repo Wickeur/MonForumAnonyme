@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="fr">
 
 <head>
@@ -6,10 +7,39 @@
   <title>Affichage des messages</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Style pour les bulles de conversation */
+    .message-container {
+      margin-bottom: 20px;
+      overflow: auto;
+    }
+
+    .message {
+      max-width: 70%;
+      padding: 10px;
+      border-radius: 15px;
+      margin-bottom: 10px;
+    }
+
+    .user-message {
+      background-color: #DCF8C6; /* Couleur de fond pour les messages de l'utilisateur */
+      float: right;
+    }
+
+    .other-message {
+      background-color: #E8E8E8; /* Couleur de fond pour les messages des autres utilisateurs */
+      float: left;
+    }
+
+    .message-name {
+      font-size: 0.8em;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+  </style>
 </head>
 
 <body>
-  <!-- <div id="app"></div> -->
   <div class="container mt-5">
     <h1 style="text-align: center">Les messages</h1>
 
@@ -17,10 +47,8 @@
       <a class="btn btn-secondary" href="http://localhost:8080" style="margin-bottom: 10px;">Ajouter un message</a>
     </div>
 
-    <!-- Affichage des classes et des étudiants -->
-    <div class="mt-4">
-      <h3>Les messages</h3>
-      <table class="table table-striped" id="messagesTable"></table>
+    <!-- Affichage des messages -->
+    <div class="mt-4" id="messagesContainer">
     </div>
   </div>
 
@@ -44,34 +72,48 @@
       });
     }
 
-    // Fonction pour afficher la liste des messages en format tableau
+    // Fonction pour afficher la liste des messages en format de bulles de conversation
     function displayMessageList(messages) {
-      var messagesTable = document.getElementById('messagesTable');
-      messagesTable.innerHTML = '';
-
-      // Création de l'en-tête du tableau
-      var headerRow = document.createElement('tr');
-      headerRow.innerHTML = '<th scope="col">Nom utilisateur</th><th scope="col">Contenu</th>';
-      messagesTable.appendChild(headerRow);
+      var messagesContainer = document.getElementById('messagesContainer');
+      messagesContainer.innerHTML = '';
 
       // Parcours des messages
       for (var messageId in messages) {
         if (messages.hasOwnProperty(messageId)) {
-          var classItem = messages[messageId];
+          var message = messages[messageId];
 
-          // Création d'une ligne pour chaque classe
-          var row = document.createElement('tr');
-          row.innerHTML = '<td>' + classItem.user + '</td>' +
-            '<td>' + classItem.description + '</td>';
+          // Création d'un conteneur de message
+          var messageContainer = document.createElement('div');
+          messageContainer.classList.add('message-container');
 
-          messagesTable.appendChild(row);
+          // Création d'une bulle de conversation pour chaque message
+          var messageBubble = document.createElement('div');
+          messageBubble.classList.add('message');
+          messageBubble.textContent = message.description;
+
+          // Ajout de la classe appropriée en fonction de l'utilisateur du message
+          if (message.user === 'moi') { // Mettez ici le nom de l'utilisateur actuel
+            messageBubble.classList.add('user-message');
+          } else {
+            messageBubble.classList.add('other-message');
+          }
+
+          // Création du nom de l'utilisateur au-dessus de la bulle
+          var messageName = document.createElement('div');
+          messageName.classList.add('message-name');
+          messageName.textContent = message.user;
+
+          // Ajout de la bulle de conversation et du nom de l'utilisateur au conteneur de message
+          messageContainer.appendChild(messageName);
+          messageContainer.appendChild(messageBubble);
+
+          // Ajout du conteneur de message à la section des messages
+          messagesContainer.appendChild(messageContainer);
         }
       }
     }
 
     getMessageList();
-
-
   </script>
 </body>
 

@@ -22,14 +22,14 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    # - name: Install dependencies
-    #   run: |
-    #     docker-compose run --rm app composer install --no-interaction --no-progress --prefer-dist
+    - name: Build and run Docker services
+      run: |
+        docker-compose up --build -d
 
     - name: Run PHPUnit tests
       run: |
         chmod +x vendor/bin/phpunit API/tests/ApiTest.php
 
-    # - name: Build and deploy Docker containers
-    #   run: |
-    #     docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+    - name: Stop and remove Docker services
+      run: |
+        docker-compose down
