@@ -9,11 +9,10 @@
 </head>
 
 <body>
-  <!-- <div id="app"></div> -->
   <div class="container mt-5">
     <h3>Ajouter un message</h3>
     <!-- Retour -->
-    <a href="http://localhost:8000" class="btn btn-secondary mt-2 mb-2">Retour</a>
+    <a href="" id="returnBtn" class="btn btn-secondary mt-2 mb-2">Retour</a>
     <hr>
     <form id="addMessageForm">
       <div class="form-group">
@@ -30,6 +29,7 @@
 
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="config.js"></script>
 
   <script>
     function addMessage() {
@@ -38,19 +38,21 @@
 
       // Exemple avec jQuery
       $.ajax({
-        url: 'http://localhost:3000/',
+        url: urlAPI, // Utilisation de la variable urlAPI définie dans config.js
         type: 'POST',
         data: JSON.stringify({ user: messageUser, description: messageDescription }),
         success: function (response) {
           console.log('Message ajouté:', response);
           // Redirigez l'utilisateur vers la page de la liste des classes après la mise à jour
-          window.location.href = 'http://localhost:8000';
+          window.location.href = urlThread; // Utilisation de la variable urlThread définie dans config.js
         },
         error: function (error) {
           console.error('Erreur lors de l\'ajout du message:', error);
         }
       });
     }
+
+    document.getElementById('returnBtn').href = urlThread;
 
   </script>
 </body>

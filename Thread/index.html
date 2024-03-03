@@ -40,11 +40,14 @@
 </head>
 
 <body>
+  <script src="config.js"></script>
   <div class="container mt-5">
     <h1 style="text-align: center">Les messages</h1>
 
     <div style="position: absolute; top:10%; right: 4%">
-      <a class="btn btn-secondary" href="http://localhost:8080" style="margin-bottom: 10px;">Ajouter un message</a>
+      <div style="position: absolute; top:10%; right: 4%">
+        <a class="btn btn-secondary" href="" id="addMessageBtn" style="margin-bottom: 10px;">Ajouter un message</a>
+      </div>
     </div>
 
     <!-- Affichage des messages -->
@@ -60,7 +63,7 @@
     // Fonction pour récupérer la liste des messages depuis l'API
     function getMessageList() {
       $.ajax({
-        url: 'http://localhost:3000/',
+        url: urlAPI,
         type: 'GET',
         success: function (response) {
           // Appel à la fonction pour afficher la liste des messages
@@ -114,6 +117,9 @@
     }
 
     getMessageList();
+
+    // Modification de l'attribut href du lien avec l'URL de urlSender
+    document.getElementById('addMessageBtn').href = urlSender;
   </script>
 </body>
 
