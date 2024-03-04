@@ -33,3 +33,15 @@ jobs:
     - name: Stop and remove Docker services
       run: |
         docker-compose down
+
+    ##### Partie Docker Swarm #####
+
+    # Connexion to manager ec2
+    - name: Connect to EC2 manager
+      run: |
+        ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ec2-user@ec2-51-44-5-56.eu-west-3.compute.amazonaws.com
+
+    # Utilisation de la private key
+    - name: Use private key
+      run: |
+        ssh -i ${{ secrets.SSH_PRIVATE_KEY }} docker swarm join --token SWMTKN-1-41clbviu1r57oe0jacjl0xfdxdd1uzubodz2w8uc1xn9ihkcej-0b5gcqqg5hzthnx2dwqi45y0j 172.31.47.13:2377
